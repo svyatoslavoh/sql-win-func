@@ -1,5 +1,21 @@
 ## Шпаргалка по оконным функциям
 
+### Ранжирование с присвоением одинакого ранга одинаковым значениям без прерывания ранга:
+```
+select created_at::date, costs, dense_rank() over(order by costs desc ) from 
+tools_shop.costs
+```
+
+### Подсчет значений с накоплением.
+```
+with t as (select sum(costs) costs, date_trunc('month', created_at)::date as dt
+from tools_shop.costs
+group by date_trunc('month', created_at)::date)
+select dt, sum(costs) over(order by dt) from t
+```
+
+
+
 ### Вынос окна в переменную.
 
 В основном запросе конструкцию WINDOW указывают после оператора WHERE и до оператора ORDER BY
