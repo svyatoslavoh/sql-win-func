@@ -84,6 +84,23 @@ WINDOW my_window AS (ORDER BY revenue),
        one_more_window AS (PARTITION BY user_id)
 ```
 
+### Временные рамки.
+
+Режим **ROWS**:
+
+Записи, которые попадут в рамку, — до и после текущей: ROWS BETWEEN <начало рамки> AND <конец рамки>. 
+_Начало рамки_ задают выражением **N PRECEDING** , где **N** — это количество записей до текущей. 
+_Конец рамки_ задают выражением **N FOLLOWING**, где **N** — это количество записей после текущей.
+
+```
+SELECT *,
+       AVG(revenue) OVER (PARTITION BY user_id ROWS BETWEEN CURRENT ROW AND 2 FOLLOWING) AS avg_revenue
+FROM online_store.orders
+```
+![about img for win func](https://pictures.s3.yandex.net/resources/5.1.3_2880border_1639758883.png)
+
+
+
 ### Ограничения
 С оконными функциями ```DISTINCT``` не сработает. 
 ```
