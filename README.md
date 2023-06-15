@@ -67,7 +67,16 @@ FROM online_store.orders;
 ```
 LEAD/LAG(<поле>, <смещение>, <значение по умолчанию>) OVER (<определение окна>)
 ```
+Пример использования:
 
+```
+SELECT TRUNC(clan_join_dt), count(*), LEAD(TRUNC(clan_join_dt)) OVER (ORDER BY TRUNC(clan_join_dt))-TRUNC(clan_join_dt)
+FROM T_WOT_CLAN_MEMBERSHIP
+WHERE is_newcomer = 1
+AND realm_id=1
+GROUP by TRUNC(clan_join_dt)
+ORDER BY 1 DESC
+```
 
 ### Подсчет значений с накоплением<a name="sun"></a>.
 ```
